@@ -1,30 +1,41 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="modal" :style="style">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div id="modal"></div>
+    </div>
+    <button class="modal-close is-large" @click="modal.hideModal"></button>
   </div>
-  <router-view/>
+  <NavBar />
+  <section class="section">
+    <div class="container">
+      <router-view />
+    </div>
+  </section>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { computed, defineComponent, ref } from "vue";
+import NavBar from "@/components/NavBar.vue";
+import { useModal } from "@/utils/useModal";
 
-#nav {
-  padding: 30px;
-}
+export default defineComponent({
+  name: "App",
+  components: {
+    NavBar,
+  },
+  setup() {
+    const modal = useModal();
+    const style = computed(() => {
+      display: modal.visible.value ? "block" : "none";
+    });
+    return { modal, style };
+  },
+});
+</script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+<style scoped>
+.modal-content {
+  top: 10%;
 }
 </style>
